@@ -2,6 +2,127 @@ const source = require('../bloxorz');
 const bloxorz = source.bloxorz;
 const move = source.move;
 const findPositionOnMap = source.findPositionOnMap;
+const isPositionValid = source.isPositionValid;
+
+describe('isPositionValid', function() {
+  it('validates good one-block positions', function() {
+    expect(isPositionValid([
+     '000001111110000',
+  	 '000001001110000',
+  	 '000001001111100',
+  	 'B11111000001111',
+  	 '0000111000011X1',
+  	 '000011100000111',
+  	 '000000100110000',
+  	 '000000111110000',
+  	 '000000111110000',
+  	 '000000011100000'], [[0,6]])).toEqual(true);
+     expect(isPositionValid([
+      '1110000000',
+   	  '1B11110000',
+   	  '1111111110',
+   	  '0111111111',
+   	  '0000011X11',
+   	  '0000001110'], [[2,1]])).toEqual(true);
+  });
+  it('invalidates bad one-block positions', function() {
+    expect(isPositionValid([
+     '00011111110000',
+  	 '00011111110000',
+  	 '11110000011100',
+  	 '11100000001100',
+  	 '11100000001100',
+  	 '1B100111111111',
+  	 '11100111111111',
+  	 '000001X1001111',
+  	 '00000111001111'], [[0,0]])).toEqual(false);
+    expect(isPositionValid([
+      '000000111111100',
+   	  '111100111001100',
+   	  '111111111001111',
+   	  '1111000000011XB',
+   	  '111100000001111',
+   	  '000000000000111'], [[3,6]])).toEqual(false);
+  });
+  it('validates good two-block horizontal positions', function() {
+    expect(isPositionValid([
+      '000000111111100',
+   	  '111100111001100',
+   	  '111111111001111',
+   	  '1111000000011XB',
+   	  '111100000001111',
+   	  '000000000000111'], [[0,6],[0,7]])).toEqual(true);
+    expect(isPositionValid([
+      '1110000000',
+      '1B11110000',
+      '1111111110',
+      '0111111111',
+      '0000011X11',
+      '0000001110'], [[1,1],[1,2]])).toEqual(true);
+  });
+  it('invalidates bad two-block horizontal positions', function() {
+    expect(isPositionValid([
+      '000000111111100',
+   	  '111100111001100',
+   	  '111111111001111',
+   	  '1111000000011XB',
+   	  '111100000001111',
+   	  '000000000000111'], [[5,2],[5,3]])).toEqual(false);
+    expect(isPositionValid([
+      '1110000000',
+      '1B11110000',
+      '1111111110',
+      '0111111111',
+      '0000011X11',
+      '0000001110'], [[0,2],[0,3]])).toEqual(false);
+  });
+  it('validates good two-block vertical positions', function() {
+    expect(isPositionValid([
+     '000001111110000',
+  	 '000001001110000',
+  	 '000001001111100',
+  	 'B11111000001111',
+  	 '0000111000011X1',
+  	 '000011100000111',
+  	 '000000100110000',
+  	 '000000111110000',
+  	 '000000111110000',
+  	 '000000011100000'], [[0,5],[1,5]])).toEqual(true);
+    expect(isPositionValid([
+     '00011111110000',
+   	 '00011111110000',
+   	 '11110000011100',
+   	 '11100000001100',
+   	 '11100000001100',
+   	 '1B100111111111',
+   	 '11100111111111',
+   	 '000001X1001111',
+   	 '00000111001111'], [[6,6],[7,6]])).toEqual(true);
+  });
+  it('invalidates bad two-block vertical positions', function() {
+    expect(isPositionValid([
+     '000001111110000',
+  	 '000001001110000',
+  	 '000001001111100',
+  	 'B11111000001111',
+  	 '0000111000011X1',
+  	 '000011100000111',
+  	 '000000100110000',
+  	 '000000111110000',
+  	 '000000111110000',
+  	 '000000011100000'], [[1,1],[2,1]])).toEqual(false);
+    expect(isPositionValid([
+     '00011111110000',
+   	 '00011111110000',
+   	 '11110000011100',
+   	 '11100000001100',
+   	 '11100000001100',
+   	 '1B100111111111',
+   	 '11100111111111',
+   	 '000001X1001111',
+   	 '00000111001111'], [[2,3],[3,3]])).toEqual(false);
+  });
+});
 
 /*
 describe('move', function() {
@@ -54,7 +175,7 @@ describe('move', function() {
     expect(move([[7,8],[8,8]],'R')).toEqual([[7,9],[8,9]]);
   });
 });
-*/
+
 describe('findPositionOnMap', function() {
   it('finds one-block player positions', function() {
     expect(findPositionOnMap([
@@ -177,7 +298,7 @@ describe('findPositionOnMap', function() {
   	 '00000000000011B'], 'B')).toEqual([[4,14],[5,14]]);
   });
 });
-
+*/
 /*
 describe('bloxorz -- final tests', function() {
   it('Passes test 1', function() {

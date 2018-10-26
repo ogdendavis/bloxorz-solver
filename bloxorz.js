@@ -1,10 +1,23 @@
 const bloxorz = (arr) => {
   // Should implement breadth-first search for solution
+  const startPosition = findPosition(arr, 'B');
+  const exitPosition = findPosition(arr, 'X');
+}
 
+function isPositionValid(board, position) {
+  // Takes position and board, and returns boolean indicating if it is within
+  // valid squares on the board
+  const validBlockSigns = ['1','B','X'];
+  for (let block of position) {
+    if (validBlockSigns.indexOf(board[block[0]][block[1]]) === -1) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function findPositionOnMap(board, target) {
-  // Takes current board and returns location for either player or exit
+  // Takes current board and returns position for provided target
   const matchedRows = board.filter(row => row.search(target) >= 0);
 
   // Case for one-block position
@@ -14,7 +27,8 @@ function findPositionOnMap(board, target) {
       }
 
   // Case for horizontal two-block positions -- checks for invalid position
-  else if (matchedRows.length === 1 && matchedRows[0].split(target).length === 3) {
+  else if (matchedRows.length === 1 &&
+           matchedRows[0].split(target).length === 3) {
             const rowIndex = board.indexOf(matchedRows[0]);
             return [[rowIndex,matchedRows[0].indexOf(target)],
                     [rowIndex,matchedRows[0].lastIndexOf(target)]];
@@ -28,6 +42,7 @@ function findPositionOnMap(board, target) {
              return [[board.indexOf(matchedRows[0]), matchedRows[0].indexOf(target)],
                      [board.indexOf(matchedRows[1]), matchedRows[1].indexOf(target)]];
            }
+
   return 'error: invalid position'
 }
 
@@ -108,4 +123,4 @@ function move(pos, dir) {
   return `error: no movement case triggered`;
 }
 
-module.exports = { bloxorz, move, findPositionOnMap };
+module.exports = { bloxorz, move, findPositionOnMap, isPositionValid };
