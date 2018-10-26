@@ -1,7 +1,9 @@
 const source = require('../bloxorz');
 const bloxorz = source.bloxorz;
 const move = source.move;
+const findPositionOnMap = source.findPositionOnMap;
 
+/*
 describe('move', function() {
   // Tests for valid input!
   it('Returns error for improperly nested single arrays', function(){
@@ -13,15 +15,6 @@ describe('move', function() {
   it('Returns error for invalid direction', function() {
     expect(move([[2,2]],9)).toEqual('error: invalid direction');
   });
-  /*
-  Removed these tests, because since all positions after initial starting position are determined by the move function, we can assume that we can assume that positions are valid, as long as the moving function passes all movement tests (below)
-  it('Returns error for diagonal starting position', function() {
-    expect(move([[5,6],[6,7]],'L')).toEqual('error: bad position');
-  });
-  it('Returns error for impossible/separated starting position', function() {
-    expect(move([[1,1],[9,7]],'R')).toEqual('error: bad position');
-  });
-  */
   // Tests for standing up!
   it('Moves up from standing', function() {
     expect(move([[2,2]],'U')).toEqual([[0,2],[1,2]]);
@@ -61,9 +54,132 @@ describe('move', function() {
     expect(move([[7,8],[8,8]],'R')).toEqual([[7,9],[8,9]]);
   });
 });
+*/
+describe('findPositionOnMap', function() {
+  it('finds one-block player positions', function() {
+    expect(findPositionOnMap([
+     '1110000000',
+  	 '1B11110000',
+  	 '1111111110',
+  	 '0111111111',
+  	 '0000011X11',
+  	 '0000001110'], 'B')).toEqual([[1,1]]);
+    expect(findPositionOnMap([
+     '00011111110000',
+  	 '00011111110000',
+  	 '11110000011100',
+  	 '11100000001100',
+  	 '11100000001100',
+  	 '1B100111111111',
+  	 '11100111111111',
+  	 '000001X1001111',
+  	 '00000111001111'], 'B')).toEqual([[5,1]]);
+    expect(findPositionOnMap([
+     '000001111110000',
+  	 '000001001110000',
+  	 '000001001111100',
+  	 'B11111000001111',
+  	 '0000111000011X1',
+  	 '000011100000111',
+  	 '000000100110000',
+  	 '000000111110000',
+  	 '000000111110000',
+  	 '000000011100000'], 'B')).toEqual([[3,0]]);
+    expect(findPositionOnMap([
+     '000000111111100',
+  	 '111100111001100',
+  	 '111111111001111',
+  	 '1111000000011XB',
+  	 '111100000001111',
+  	 '000000000000111'], 'B')).toEqual([[3,14]]);
+  });
+  it('finds exit positions', function() {
+    expect(findPositionOnMap([
+     '1110000000',
+  	 '1B11110000',
+  	 '1111111110',
+  	 '0111111111',
+  	 '0000011X11',
+  	 '0000001110'], 'X')).toEqual([[4,7]]);
+    expect(findPositionOnMap([
+     '00011111110000',
+  	 '000X1111110000',
+  	 '11110000011100',
+  	 '11100000001100',
+  	 '11100000001100',
+  	 '1B100111111111',
+  	 '11100111111111',
+  	 '00000111001111',
+  	 '00000111001111'], 'X')).toEqual([[1,3]]);
+    expect(findPositionOnMap([
+     '000001111110000',
+  	 '000001001110000',
+  	 '000001001111100',
+  	 'B11111000001111',
+  	 '0000111000011X1',
+  	 '000011100000111',
+  	 '000000100110000',
+  	 '000000111110000',
+  	 '000000111110000',
+  	 '000000011100000'], 'X')).toEqual([[4,13]]);
+    expect(findPositionOnMap([
+     '000000111111100',
+  	 '111100111001100',
+  	 '111111111001111',
+  	 '1111000000011XB',
+  	 '111100000001111',
+  	 '000000000000111'], 'X')).toEqual([[3,13]]);
+  });
+  it('finds horizontal two-block player positions', function() {
+    expect(findPositionOnMap([
+     '1110000000',
+  	 '1BB1110000',
+  	 '1111111110',
+  	 '0111111111',
+  	 '0000011X11',
+  	 '0000001110'], 'B')).toEqual([[1,1],[1,2]]);
+     expect(findPositionOnMap([
+      '1110000000',
+   	  'BB1110000',
+   	  '1111111110',
+   	  '0111111111',
+   	  '0000011X11',
+   	  '0000001110'], 'B')).toEqual([[1,0],[1,1]]);
+    expect(findPositionOnMap([
+     '00011111110000',
+  	 '000X1111110000',
+  	 '11110000011100',
+  	 '11100000001100',
+  	 '11100000001100',
+  	 '11100111111111',
+  	 '111001BB111111',
+  	 '00000111001111',
+  	 '00000111001111'], 'B')).toEqual([[6,6],[6,7]]);
+  });
+  it('finds vertical two-block player positions', function() {
+    expect(findPositionOnMap([
+     '000001111110000',
+  	 '000001001110000',
+  	 '000001001111100',
+  	 'B11111000001111',
+  	 'B000111000011X1',
+  	 '000011100000111',
+  	 '000000100110000',
+  	 '000000111110000',
+  	 '000000111110000',
+  	 '000000011100000'], 'B')).toEqual([[3,0],[4,0]]);
+    expect(findPositionOnMap([
+     '000000111111100',
+  	 '111100111001100',
+  	 '111111111001111',
+  	 '1111000000011X0',
+  	 '11110000000111B',
+  	 '00000000000011B'], 'B')).toEqual([[4,14],[5,14]]);
+  });
+});
 
 /*
-describe('bloxorz', function() {
+describe('bloxorz -- final tests', function() {
   it('Passes test 1', function() {
     expect(bloxorz(['1110000000',
   	 '1B11110000',

@@ -1,11 +1,40 @@
 const bloxorz = (arr) => {
+  // Should implement breadth-first search for solution
 
+}
+
+function findPositionOnMap(board, target) {
+  // Takes current board and returns location for either player or exit
+  const matchedRows = board.filter(row => row.search(target) >= 0);
+
+  // Case for one-block position
+  if (matchedRows.length === 1 &&
+      matchedRows[0].indexOf(target) === matchedRows[0].lastIndexOf(target)) {
+        return [[board.indexOf(matchedRows[0]), matchedRows[0].indexOf(target)]]
+      }
+
+  // Case for horizontal two-block positions -- checks for invalid position
+  else if (matchedRows.length === 1 && matchedRows[0].split(target).length === 3) {
+            const rowIndex = board.indexOf(matchedRows[0]);
+            return [[rowIndex,matchedRows[0].indexOf(target)],
+                    [rowIndex,matchedRows[0].lastIndexOf(target)]];
+           }
+
+  // Case for vertical two-block positions -- checks for invalid position
+  else if (matchedRows.length === 2 &&
+           matchedRows[0].indexOf(target) === matchedRows[0].lastIndexOf(target) &&
+           matchedRows[1].indexOf(target) === matchedRows[1].lastIndexOf(target) &&
+           board.indexOf(matchedRows[1]) - board.indexOf(matchedRows[0]) === 1) {
+             return [[board.indexOf(matchedRows[0]), matchedRows[0].indexOf(target)],
+                     [board.indexOf(matchedRows[1]), matchedRows[1].indexOf(target)]];
+           }
+  return 'error: invalid position'
 }
 
 function move(pos, dir) {
   // Takes position as an array containing 1 or 2 sub-arrays:
-  //    Y is the index of the string in the map array
-  //    X is the index of the character in the string
+  //    Y is the index of the string in the map array (vertical pos)
+  //    X is the index of the character in the string (horizontal pos)
   //    1: [[y,x]]
   //    2: [[y,x],[y,x]]
   // Takes dir as 1-character string: U, D, L, or R
@@ -76,7 +105,7 @@ function move(pos, dir) {
     default:
       return 'error: invalid direction';
   }
-  return `I ain't programmed that yet!`;
+  return `error: no movement case triggered`;
 }
 
-module.exports = { bloxorz, move };
+module.exports = { bloxorz, move, findPositionOnMap };
