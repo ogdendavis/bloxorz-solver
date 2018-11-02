@@ -1,23 +1,55 @@
 const bloxorz = (arr) => {
   // Should implement breadth-first search for solution
-  const startPosition = findPosition(arr, 'B');
-  const exitPosition = findPosition(arr, 'X');
+  const startPosition = findPositionOnMap(arr, 'B');
+  const exitPosition = findPositionOnMap(arr, 'X');
+
+  const paths = [[startPosition]];
+  const visited = [];
+  let searching = true;
+  let solutionPath = [];
+
+  while (searching) {
+    // This is the recursive(?) part -- keep on enqueing new nodes and visiting
+    // them until I've found the solution! If and when solution is found, set
+    // searching to false and return the moves!
+    for (let path of paths) {
+      const currentPos = path[path.length - 1];
+      if (visited.indexOf(currentPos) === -1) {
+        // If you're in a new place
+        visited.push(currentPos);
+        const adjacentPositions = ['U','R','D','L'].map(dir => move(currentPos, dir));
+        for (let potentialPos of adjacentPositions) {
+          if (exitPosition === potentialPos) {
+            // Found it!!!
+            searching = false;
+            soltuionPath = [...path, potentialPos];
+          }
+          else if (visited.indexOf(potentialPos) === -1 && isPositionValid(arr, potentialPos)) {
+            paths.push([...path, potentialPos]);
+          }
+        }
+      }
+    }
+  }
+
+  return solutionPath;
 }
 
+// isPositionValid takes position and board, and returns boolean indicating if
+// it is within valid squares on the board
 function isPositionValid(board, position) {
-  // Takes position and board, and returns boolean indicating if it is within
-  // valid squares on the board
   const validBlockSigns = ['1','B','X'];
   for (let block of position) {
-    if (validBlockSigns.indexOf(board[block[0]][block[1]]) === -1) {
+    if (block[0] < 0 || block[1] < 0 || block[0] >= board.length || block[1] >= board[0].length || validBlockSigns.indexOf(board[block[0]][block[1]]) === -1) {
       return false;
     }
   }
   return true;
 }
 
+// findPositionOnMap takes current board and returns position for provided
+// target
 function findPositionOnMap(board, target) {
-  // Takes current board and returns position for provided target
   const matchedRows = board.filter(row => row.search(target) >= 0);
 
   // Case for one-block position
@@ -46,16 +78,17 @@ function findPositionOnMap(board, target) {
   return 'error: invalid position'
 }
 
+// move takes position as an array containing 1 or 2 sub-arrays:
+//    Y is the index of the string in the map array (vertical pos)
+//    X is the index of the character in the string (horizontal pos)
+//    1: [[y,x]]
+//    2: [[y,x],[y,x]]
+// Takes dir as 1-character string: U, D, L, or R
+// Returns new position in same format as pos -- this position may or may not be
+// valid on the map
+// If there are two cells in the position, they should always be in ascending
+// order (lower x or y should come first)
 function move(pos, dir) {
-  // Takes position as an array containing 1 or 2 sub-arrays:
-  //    Y is the index of the string in the map array (vertical pos)
-  //    X is the index of the character in the string (horizontal pos)
-  //    1: [[y,x]]
-  //    2: [[y,x],[y,x]]
-  // Takes dir as 1-character string: U, D, L, or R
-  // Returns new position in same format as pos -- this position may or may not be valid on the map
-  // If there are two cells in the position, they should always be in ascending order (lower x or y should come first)
-
   // Input tests
   if (arguments.length > 2) {
     return 'error: too many arguments';
