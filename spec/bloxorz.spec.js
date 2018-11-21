@@ -3,8 +3,32 @@ const bloxorz = source.bloxorz;
 const move = source.move;
 const findPositionOnMap = source.findPositionOnMap;
 const isPositionValid = source.isPositionValid;
+const isEqual = source.isEqual;
 
+describe('isEqual',  function() {
+  it('Validates equal one-block positions', function() {
+    expect(isEqual([[5,5]], [[5,5]])).toEqual(true);
+    expect(isEqual([[0,10]], [[0,10]])).toEqual(true);
+    expect(isEqual([[28,3]], [[28,3]])).toEqual(true);
+  });
+  it('Invalidates non-equal one-block positions', function() {
+    expect(isEqual([[5,5]], [[0,10]])).toEqual(false);
+    expect(isEqual([[22,5]], [[8,12]])).toEqual(false);
+    expect(isEqual([[1,2]], [[3,4]])).toEqual(false);
+  });
+  it('Validates equal two-block positions', function() {
+    expect(isEqual([[5,5],[5,6]], [[5,5],[5,6]])).toEqual(true);
+    expect(isEqual([[0,10],[1,10]], [[0,10],[1,10]])).toEqual(true);
+    expect(isEqual([[42,4],[42,3]], [[42,4],[42,3]])).toEqual(true);
+  });
+  it('Invalidates non-equal two-block positions', function() {
+    expect(isEqual([[5,5],[5,6]], [[5,7],[5,6]])).toEqual(false);
+    expect(isEqual([[0,10],[1,10]], [[1,10],[2,10]])).toEqual(false);
+    expect(isEqual([[42,4],[42,3]], [[2,42],[3,42]])).toEqual(false);
+  });
+});
 
+/*
 describe('isPositionValid', function() {
   it('validates good one-block positions', function() {
     expect(isPositionValid([
@@ -206,7 +230,7 @@ describe('isPositionValid', function() {
     	 '0000001110'], [[2,13]])).toEqual(false);
   });
 });
-/*
+
 describe('move', function() {
   // Tests for valid input!
   it('Returns error for improperly nested single arrays', function(){
@@ -380,8 +404,7 @@ describe('findPositionOnMap', function() {
   	 '00000000000011B'], 'B')).toEqual([[4,14],[5,14]]);
   });
 });
-*/
-/*
+
 describe('bloxorz -- final tests', function() {
   it('Passes test 1', function() {
     expect(bloxorz(['1110000000',

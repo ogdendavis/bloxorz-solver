@@ -8,6 +8,7 @@ const bloxorz = (arr) => {
   let searching = true;
   let solutionPath = [];
 
+  let testI = 0;
   while (searching) {
     // This is the recursive(?) part -- keep on enqueing new nodes and visiting
     // them until I've found the solution! If and when solution is found, set
@@ -29,6 +30,11 @@ const bloxorz = (arr) => {
           }
         }
       }
+    }
+    testI++;
+    if (testI >= 10) {
+      searching = false;
+      return paths;
     }
   }
 
@@ -62,8 +68,8 @@ function findPositionOnMap(board, target) {
   else if (matchedRows.length === 1 &&
            matchedRows[0].split(target).length === 3) {
             const rowIndex = board.indexOf(matchedRows[0]);
-            return [[rowIndex,matchedRows[0].indexOf(target)],
-                    [rowIndex,matchedRows[0].lastIndexOf(target)]];
+            return [[rowIndex, matchedRows[0].indexOf(target)],
+                    [rowIndex, matchedRows[0].lastIndexOf(target)]];
            }
 
   // Case for vertical two-block positions -- checks for invalid position
@@ -156,4 +162,11 @@ function move(pos, dir) {
   return `error: no movement case triggered`;
 }
 
-module.exports = { bloxorz, move, findPositionOnMap, isPositionValid };
+// isEqual takes two arrays (representing positions), and determines whether
+// or not they're the same.
+// This is needed because comparing nested arrays with === doesn't work
+function isEqual(a, b) {
+
+}
+
+module.exports = { bloxorz, move, findPositionOnMap, isPositionValid, isEqual };
