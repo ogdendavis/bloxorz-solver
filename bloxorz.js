@@ -165,8 +165,25 @@ function move(pos, dir) {
 // isEqual takes two arrays (representing positions), and determines whether
 // or not they're the same.
 // This is needed because comparing nested arrays with === doesn't work
+// This function won't work for all arrays -- just ones in the format we have
+// for positions
 function isEqual(a, b) {
-
+  // Case for if one is a one-block position and the other is two-block
+  if (a.length !== b.length) {
+    return false;
+  }
+  // Compare first block -- happens for one- or two-block positions
+  if (a[0][0] !== b[0][0] || a[0][1] !== b[0][1]) {
+    return false;
+  }
+  // Compare second block for two-block positions
+  if (a.length === 2) { // We already established that a.length === b.length
+    if (a[1][0] !== b[1][0] || a[1][1] !== b[1][1]) {
+      return false;
+    }
+  }
+  // If we've made it this far, positions are equal!
+  return true;
 }
 
 module.exports = { bloxorz, move, findPositionOnMap, isPositionValid, isEqual };
