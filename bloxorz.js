@@ -14,13 +14,16 @@ const bloxorz = (arr) => {
     // them until I've found the solution! If and when solution is found, set
     // searching to false and return the moves!
     for (let path of paths) {
+
+      // I'm getting stuck in this loop for some reason!
+
       const currentPos = path[path.length - 1];
       if (visited.indexOf(currentPos) === -1) {
         // If you're in a new place
         visited.push(currentPos);
         const adjacentPositions = ['U','R','D','L'].map(dir => move(currentPos, dir));
         for (let potentialPos of adjacentPositions) {
-          if (exitPosition === potentialPos) {
+          if (isEqual(exitPosition, potentialPos)) {
             // Found it!!!
             searching = false;
             soltuionPath = [...path, potentialPos];

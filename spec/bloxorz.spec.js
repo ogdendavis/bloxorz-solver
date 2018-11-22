@@ -5,6 +5,7 @@ const findPositionOnMap = source.findPositionOnMap;
 const isPositionValid = source.isPositionValid;
 const isEqual = source.isEqual;
 
+/*
 describe('isEqual',  function() {
   it('Validates equal one-block positions', function() {
     expect(isEqual([[5,5]], [[5,5]])).toEqual(true);
@@ -28,7 +29,6 @@ describe('isEqual',  function() {
   });
 });
 
-/*
 describe('isPositionValid', function() {
   it('validates good one-block positions', function() {
     expect(isPositionValid([
@@ -404,6 +404,7 @@ describe('findPositionOnMap', function() {
   	 '00000000000011B'], 'B')).toEqual([[4,14],[5,14]]);
   });
 });
+*/
 
 describe('bloxorz -- final tests', function() {
   it('Passes test 1', function() {
@@ -459,4 +460,3 @@ describe('bloxorz -- final tests', function() {
   	 '000000011100000'])).toEqual('RRRDRDDRDDRULLLUULUUURRRDDLURRDRDDR');
   });
 });
-*/
